@@ -1,0 +1,22 @@
+<div>
+  <h2>{{task.title}}</h2>
+  <p>{{task.description}}</p>
+  <p>
+    <b>Status: {{task.status}}</b>
+  </p>
+  <p>Due Date: {{task.dueDate}}</p>
+</div>
+
+<div>
+  <h3>Pendências:</h3>
+  <div id="sub-task-form-container">
+    <button id="create-subtask-button">Criar sub-task</button>
+  </div>
+  <ul>
+    {{#each subTasks}}
+      <li>{{this.title}}</li>
+    {{/each}}
+  </ul>
+</div>
+
+<script src="/javascripts/newSubtaskForm.js"></script>

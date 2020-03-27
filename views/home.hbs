@@ -1,7 +1,9 @@
 <div>
   <ul>
     {{#each tasks}}
-      <li>{{this.title}}</li>
+      <a href="/task/detail/{{this._id}}">
+        <li>{{this.title}}</li>
+      </a>
     {{/each}}
   </ul>
 </div>

@@ -1,5 +1,6 @@
 const express = require('express');
 const Tasks = require('../models/Task');
+const SubTasks = require('../models/SubTask');
 
 const router = express.Router();
 
@@ -23,11 +24,48 @@ router.post('/task/new', (req, res) => {
 
   Tasks.create(task)
     .then(() => {
+
       res.redirect('/');
+
+
+
+
+
+
     })
     .catch((err) => {
       throw new Error(err);
     });
-})
+});
+
+router.get('/task/detail/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const task = await Tasks.findOne({ _id: id });
+    const subTasks = await SubTasks.find({ task: id });
+    console.log(task);
+    console.log(subTasks)
+
+    res.render('task-detail', { task, subTasks });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+router.post('/sub-task/new/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const newTask = new SubTasks({ ...req.body, task: id })
+
+    console.log(newTask)
+
+    await SubTasks.create(newTask);
+
+    res.redirect(`/task/detail/${id}`);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
 
 module.exports = router;
