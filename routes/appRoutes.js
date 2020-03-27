@@ -24,14 +24,7 @@ router.post('/task/new', (req, res) => {
 
   Tasks.create(task)
     .then(() => {
-
       res.redirect('/');
-
-
-
-
-
-
     })
     .catch((err) => {
       throw new Error(err);
@@ -44,8 +37,6 @@ router.get('/task/detail/:id', async (req, res) => {
   try {
     const task = await Tasks.findOne({ _id: id });
     const subTasks = await SubTasks.find({ task: id });
-    console.log(task);
-    console.log(subTasks)
 
     res.render('task-detail', { task, subTasks });
   } catch (error) {
@@ -57,8 +48,6 @@ router.post('/sub-task/new/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const newTask = new SubTasks({ ...req.body, task: id })
-
-    console.log(newTask)
 
     await SubTasks.create(newTask);
 
