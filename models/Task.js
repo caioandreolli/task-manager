@@ -7,7 +7,7 @@ const taskSchema = new Schema({
   status: { type: String, required: true, enum: ['TODO', 'ONGOING', 'DONE', 'CANCELED'] },
   creationDate: { type: Date, required: true, default: new Date() },
   dueDate: { type: Date, required: true },
-  user: { type: mongoose.Types.ObjectId, ref: 'User', required: false },
+  user: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
 });
 
 const Task = mongoose.model('Task', taskSchema);
