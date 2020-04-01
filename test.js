@@ -16,10 +16,10 @@ mongoose
 
   const newUser = {
     name: 'Adriana Saty',
-    username: 'drisaty',
+    username: 'admin',
     password: '12345',
-    email: 'dri@adriana.com.br',
-    ativo: true,
+    email: 'dri@adriana.com.br2',
+    role: 'admin',
   };
 
  User.create(new User(newUser))

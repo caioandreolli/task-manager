@@ -5,9 +5,9 @@ const SubTasks = require('../../models/SubTask');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  const { loggedUser } = req.session;
+  const { user } = req;
 
-  Tasks.find({ user: loggedUser._id })
+  Tasks.find({ user: user._id })
     .then(tasks => {
       res.render('private/tasks', { tasks });
     })
@@ -21,10 +21,10 @@ router.get('/new', (req, res) => {
 });
 
 router.post('/new', (req, res) => {
-  const { loggedUser } = req.session;
+  const { user } = req;
   const { title, description, status, dueDate } = req.body;
 
-  const task = new Tasks({ title, description, status, dueDate, user: loggedUser._id });
+  const task = new Tasks({ title, description, status, dueDate, user: user._id });
 
   Tasks.create(task)
     .then(() => {

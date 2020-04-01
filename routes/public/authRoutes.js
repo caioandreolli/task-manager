@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
 const Users = require('../../models/User');
 
 const router = express.Router();
@@ -44,44 +45,22 @@ router.post('/signup', async (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-  console.log(req.session)
-  res.render('public/login');
+  res.render('public/login', { errorMessage: req.flash('error') });
 });
 
-router.post('/login', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-  
-    if (!username || !password) {
-      res.render('public/login', { errorMessage: 'Por favor, preencha todos os campos' });
-      return;
-    }
-
-    const user = await Users.findOne({ username });
-
-    if (!user) {
-      res.render('public/login', { errorMessage: 'Usuário ou senha incorretos' });
-      return;
-    }
-
-    const isPasswordValid = bcrypt.compareSync(password, user.password)
-
-    if (!isPasswordValid) {
-      res.render('public/login', { errorMessage: 'Usuário ou senha incorretos' });
-      return;
-    }
-
-    req.session.loggedUser = user;
-    res.redirect('/task');
-  } catch (error) {
-    throw new Error(error);
-  }
-});
+router.post(
+  '/login',
+  passport.authenticate('local', {
+    successRedirect: '/task',
+    failureRedirect: '/auth/login',
+    failureFlash: true,
+    passReqToCallback: true
+  })
+);
 
 router.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    res.redirect('/auth/login');
-  });
+  req.logout();
+  res.redirect('/auth/login');
 })
 
 module.exports = router;
