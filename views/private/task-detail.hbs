@@ -14,9 +14,17 @@
   </div>
   <ul>
     {{#each subTasks}}
-      <li>{{this.title}}</li>
+      <li>
+        <span>
+          {{this.title}}
+        </span>
+        <button>
+          Editar
+        </button>
+      </li>
     {{/each}}
   </ul>
 </div>
 
 <script src="/javascripts/newSubtaskForm.js"></script>
+<script src="/javascripts/editSubTaskForm.js"></script>

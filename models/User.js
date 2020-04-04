@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
+const findOrCreate = require('mongoose-findorcreate')
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
+  facebookId: String,
   name: { type: String, required: true, },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -9,6 +11,8 @@ const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   ativo: { type: Boolean, required: true, default: true },
 });
+
+userSchema.plugin(findOrCreate);
 
 const User = mongoose.model('User', userSchema);
 

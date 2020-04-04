@@ -5,6 +5,7 @@ const Users = require('../../models/User');
 
 const router = express.Router();
 
+// local strategy signup
 router.get('/signup', (req, res) => {
   res.render('public/signup');
 });
@@ -25,8 +26,6 @@ router.post('/signup', async (req, res) => {
     
     res.redirect('/auth/login');
   } catch (error) {
-    console.log(error)
-
     if (error.message.includes('required')) {
       res.render('public/signup', { errorMessage: 'Por favor, preencha todos os campos' });
       return;
@@ -44,6 +43,7 @@ router.post('/signup', async (req, res) => {
   }
 });
 
+// local strategy login
 router.get('/login', (req, res) => {
   res.render('public/login', { errorMessage: req.flash('error') });
 });
@@ -51,13 +51,36 @@ router.get('/login', (req, res) => {
 router.post(
   '/login',
   passport.authenticate('local', {
-    successRedirect: '/task',
     failureRedirect: '/auth/login',
     failureFlash: true,
     passReqToCallback: true
-  })
+  }),
+  (req, res) => {
+    const redirect = {
+      member: '/task',
+      admin: '/admin/dashboard',
+    };
+    const { role } = req.user;
+
+    res.redirect(redirect[role]);
+  },
 );
 
+// faccebook strategy login
+router.get('/facebook', passport.authenticate('facebook'));
+
+router.get(
+  '/facebook/callback',
+  passport.authenticate(
+    'facebook',
+    { failureRedirect: '/login' }
+  ),
+  (req, res) => {
+    res.redirect('/task');
+  },
+);
+
+// logout
 router.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/auth/login');

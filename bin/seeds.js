@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const User = require('./models/User');
 
 mongoose
@@ -14,16 +15,24 @@ mongoose
     throw new Error(err);
   });
 
+  const salt = 10;
+  const saltRounds = bcrypt.genSaltSync(salt);
+  const hashPassword = bcrypt.hashSync('12345', saltRounds);
+  
+
   const newUser = {
     name: 'Adriana Saty',
     username: 'admin',
-    password: '12345',
-    email: 'dri@adriana.com.br2',
+    password: hashPassword,
+    email: 'dri@adriana.com.br',
     role: 'admin',
   };
 
  User.create(new User(newUser))
-  .then(user => console.log(user))
+  .then(user => {
+    console.log(user);
+    mongoose.connection.close();
+  })
   .catch(err => {
     throw new Error(err);
   })
