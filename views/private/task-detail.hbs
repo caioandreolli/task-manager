@@ -14,11 +14,11 @@
   </div>
   <ul>
     {{#each subTasks}}
-      <li>
+      <li id="sub-task-{{this._id}}">
         <span>
           {{this.title}}
         </span>
-        <button>
+        <button class="edit-subtask-button" sub-task={{this._id}}>
           Editar
         </button>
       </li>

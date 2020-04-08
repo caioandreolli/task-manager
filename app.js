@@ -102,7 +102,7 @@ app.use(
     secret: process.env.SESSION_COOKIE_SECRET,
     resave: true,
     saveUninitialized: true,
-    cookie: { maxAge: process.env.SESSION_COOKIE_MAX_AGE },
+    cookie: { maxAge: +process.env.SESSION_COOKIE_MAX_AGE },
     
   })
 );
